@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="./assets/css/public.min.css" />
+  <link rel="stylesheet" href="./assets/css/bindingStudent.min.css" />
+  <title>学生账号绑定</title>
+  <script src="./js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    var clientWidth = document.documentElement.clientWidth;
+    //   if (clientWidth < 768) {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      Math.floor(clientWidth / 7.5) + "px";
+    //   }
+  </script>
+</head>
+
+<body>
+  <div class="parent">
+    <div class="child"> 
+      <header>
+        <span>学生账号绑定</span>
+      </header>
+      <section>
+        <form action="" id="form">
+          <div>
+            <label class="label" for="account">绑定账号</label>
+            <input type="text" placeholder="请输入学籍号" id="account" name="account" />
+          </div>
+          <div>
+            <label class="label" for="pw">账号密码</label>
+            <input type="text" placeholder="请输入密码" name="pw" />
+          </div>
+        </form>
+        <div class="buttonGroup">
+          <button type="submit" id="submit">
+            立即绑定
+          </button>
+        </div>
+        <div class="tip">*学生绑定账号一般为学生的全国学籍号，以大写字母“G”或“L”开头，在加上学生身份证号码。</div>
+      </section>
+      <footer>
+        <p>Copyright©2019 厦门大学附属科技中学 <br>版权所有闽ICP备09007463号</p>
+      </footer>
+    </div>
+  </div>
+  <script>
+    var url = window.location.href;
+    var domain = window.location.host;
+    openId = 'ou99q05Qle0ife9VNtKLD1rKdy8I'
+
+    document.getElementById("submit").addEventListener(
+      "touchend",
+      function () {
+        let form = document.getElementById("form");
+        if (
+          form.account.value &&
+          form.pw.value
+        ) {
+          // 表单验证成功执行Ajax
+          $.ajax({
+            url: "http://10.10.101.224:8099" + '/api/weiXin/bdStudent',
+            type: "post",
+            async: true,
+            dataType: 'json',
+            headers: {
+              Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+               
+            },
+            data: {
+              userName: form.account.value,
+              password: form.pw.value,
+              openId: openId
+            },
+            success: function (res) {
+              if(typeof(res) == 'string') {
+                res = JSON.parse(res)
+              }
+              if(res.code == 403){
+                window.location.href = res.data ;
+                return ;
+              }
+              if (res.code == 200) {
+                layer.open({
+                  content: "绑定成功",
+                  skin: "msg",
+                  time: 2 //2.5秒后自动关闭
+                });
+                window.location.href = './binding.html'
+              }else{
+                layer.open({
+                  content: "绑定失败",
+                  skin: "msg",
+                  time: 2 //2.5秒后自动关闭
+                });
+              }
+            }
+          });
+
+        } else {
+          //提示
+          layer.open({
+            content: "不能为空",
+            skin: "msg",
+            time: 2 //2.5秒后自动关闭
+          });
+          return;
+        }
+      },
+      false
+    );
+  </script>
+</body>
+
+</html>

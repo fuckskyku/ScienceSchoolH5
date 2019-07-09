@@ -1,0 +1,228 @@
+header {
+  background: #EFEFF4;
+  background: url("../../static/H5/account/gb.png") no-repeat;
+  background-size: cover;
+  height: 2.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  span {
+    font-weight: 500;
+    color: #333333;
+    margin-top: 0.1rem;
+    font-size: 0.34rem;
+  }
+
+  div {
+    img {
+      display: block;
+      width: 1.22rem;
+      height: 1.22rem;
+    }
+  }
+}
+
+section {
+  background: #EFEFF4;
+  overflow: hidden;
+
+  .content {
+    margin-top: 0.3rem;
+    background: #ffffff;
+
+    div {
+      padding-left: 0.35rem;
+      font-size: 0.34rem;
+      padding: 0.3rem 0;
+      background: #ffffff;
+      position: relative;
+      .btn {
+        width: 1.6rem;
+        height: 0.62rem;
+        line-height: 0.62rem;
+        border: 1px solid rgba(2, 198, 2, 1);
+        color: #04BE02;
+        border-radius: 0.1rem;
+        position: absolute;
+        right: 0.3rem;
+        top: 50%;
+        margin-top: -0.31rem;
+        -webkit-border-radius: 0.1rem;
+        -moz-border-radius: 0.1rem;
+        -ms-border-radius: 0.1rem;
+        -o-border-radius: 0.1rem;
+        padding: 0;
+        text-align: center;
+        font-size: 0.3rem;
+      }
+      label {
+        height: 0.48rem;
+        color: #999999;
+        margin-right: 0.3rem;
+        margin-left: 0.3rem;
+        width: 1.6rem;
+        display: inline-block;
+        vertical-align: bottom;
+        text-align: justify;
+
+        &::after {
+          display: inline-block;
+          vertical-align: bottom;
+          width: 100%;
+          content: '';
+          height: 0;
+        }
+      }
+
+      
+
+      input {
+        font-size: 0.32rem;
+        padding: 0.3rem 0.3rem;
+        outline: none;
+        width: 100%;
+        display: block;
+        border: none;
+        border-bottom: 1px solid #d7d7d7;
+
+        &:disabled {
+          background: transparent;
+        }
+      }
+
+    }
+
+    div::after {
+      content: '';
+      display: block;
+      width: 98%;
+      height: 0;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-bottom: 1px solid #f4f4f4;
+    }
+
+    div:last-child input {
+      border-bottom: none;
+    }
+  }
+
+  .content:first-child {
+    margin: 0;
+  }
+
+
+
+  .tip {
+    word-break: break-all;
+    margin-right: 0.4rem;
+    margin-top: 0.28rem;
+    font-size: 0.28rem;
+    color: #999999;
+  }
+
+  .buttonGroup {
+    margin-top: 1.3rem;
+    text-align: center;
+    padding: 0;
+
+    button {
+      font-size: 0.34rem;
+      color: white;
+      background: #04BE02;
+      border-radius: 5px;
+      outline: none;
+      border: none;
+      height: 0.9rem;
+      width: 90%;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+    }
+  }
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+  font-size: 0.2rem;
+  color: #B2B2B2;
+  padding: 0.8rem 0 0.3rem;
+}
+
+.parent {
+  position: absolute;
+  ;
+  height: 100%; //高度根据需求自行设定
+  width: 100%;
+  background: #f4f4f4;
+}
+
+.child {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; //left,top,right,bottom都为0，充满真个页面
+  overflow-y: auto;
+  overflow-x: hidden; //设置Y轴出现滚动条，X轴隐藏
+
+}
+
+.dialog{
+  background: #FFFFFF;
+  text-align: center;
+  .img{
+    margin-top: 1rem;
+    img{
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  .tip{
+    color: #000000;
+    font-size: 0.4rem;
+  }
+  .desc{
+    width:5.84rem;
+    height:0.7rem;
+    font-size:0.28rem;
+    line-height: 0.4rem;
+    color: #888888;
+    margin: 0.45rem auto 0.65rem;
+  }
+  .bind{
+    width:6.9rem;
+    height:0.88rem;
+    border-radius:0.1rem;
+    line-height: 0.88rem;
+    text-align: center;
+    margin: 0.3rem auto;
+    font-size:0.36rem;
+    -webkit-border-radius:0.1rem;
+    -moz-border-radius:0.1rem;
+    -ms-border-radius:0.1rem;
+    -o-border-radius:0.1rem;
+}
+  .nextBind{
+    background:rgba(251,250,252,1);
+    border:1px solid rgba(214,213,214,0.3);
+  }
+  .unBind{
+    background:rgba(255,234,85,1);
+    border:1px solid rgba(246,214,0,0.4);
+  }
+}

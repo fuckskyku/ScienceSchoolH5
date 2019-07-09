@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="./assets/css/public.min.css" />
+  <link rel="stylesheet" href="./assets/css/selectBindType.min.css" />
+  <title>账号绑定</title>
+  <script src="./js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    var clientWidth = document.documentElement.clientWidth;
+    //   if (clientWidth < 768) {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      Math.floor(clientWidth / 7.5) + "px";
+    //   }
+  </script>
+</head>
+
+<body>
+  <div class="parent">
+    <div class="child"> 
+      <header>
+        <span>账号绑定</span>
+      </header>
+      <section>
+        <div class="buttonGroup">
+          <button class="submit"  onclick="submit('bindTeacher')">
+            我是老师
+          </button>
+        </div>
+        <div class="buttonGroup">
+          <button class="submit" onclick="submit('bindParent')">
+            我是家长
+          </button>
+        </div>
+        <div class="buttonGroup">
+          <button class="submit" onclick="submit('bindStudent')">
+            我是学生
+          </button>
+        </div>
+      </section>
+      <footer>
+        <p>Powered by MSEENET©2008-2019 www.mseenet.com</p>
+      </footer>
+    </div>
+  </div>
+  <script>
+    var domain = window.location.host;
+    var openId = 'ou99q05Qle0ife9VNtKLD1rKdy8I';
+    function submit(params) {
+      window.location.href = "./" + params + ".html";
+    };
+    function skip(type,params) {
+      Window.location.href = './' + type + ".html";
+      if(type == 'bindTeacher') {
+        
+        // http://10.10.101.224:8099/api/weiXin/bdTeacher 
+      }else if (type == 'bindParent'){
+        // http://10.10.101.224:8099/api/weiXin/bdParent
+      }else if (type == 'bindStudent'){
+        // http://10.10.101.224:8099/api/weiXin/bdStudent
+      }
+      
+    }
+  </script>
+</body>
+
+</html>

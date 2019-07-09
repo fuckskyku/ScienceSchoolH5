@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="./assets/css/public.min.css" />
+  <link rel="stylesheet" href="./assets/css/index.min.css" />
+  <title>首页</title>
+  <script src="./js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    var clientWidth = document.documentElement.clientWidth;
+    //   if (clientWidth < 768) {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      Math.floor(clientWidth / 7.5) + "px";
+    //   }
+  </script>
+</head>
+
+<body>
+  <div id="login_container"></div>
+  <section>
+    <article class="Yes">
+      <div class="head">
+        <div>统一账号的应用</div>
+        <a href="./myInfo.html">
+          <img src="./static/H5/index/ic_man.png" alt="" />
+        </a>
+      </div>
+      <div class="nav">
+        <ul id="YesTabId">
+          <!-- <li class="active" data-TabName="NewOA">新OA</li>
+          <li data-TabName="OldOA">旧OA</li>
+          <li data-TabName="FirstClassify">分类一</li>
+          <li data-TabName="SecondClassify">分类二</li> -->
+        </ul>
+      </div>
+      <div class="container">
+        <!--
+          <div class="item">
+            <a href="">
+              <div><img src="./static/H5/index/img_2.png" alt="" /></div>
+              <div>统一身份认证</div>
+            </a>
+          </div> -->
+      </div>
+    </article>
+    <article class="No">
+      <div class="head">
+        <div>非统一账号的应用</div>
+        <!-- <img src="./static/H5/index/ic_man.png" alt="" /> -->
+      </div>
+      <div class="nav">
+        <ul id="TabId">
+          <li class="active" data-TabName="1">学校应用</li>
+          <li data-TabName="2">市级应用</li>
+          <li data-TabName="3">省级应用</li>
+          <li data-TabName="4">国家应用</li>
+        </ul>
+      </div>
+      <div class="container">
+        <!--
+          <div class="item">
+            <div><img src="./static/H5/index/img_1.png" alt="" /></div>
+            <div>OA应用</div> -->
+      </div>
+      </div>
+    </article>
+  </section>
+  <script>
+    
+    var userType = '2';
+    var url = window.location.href;
+    var domain = window.location.host;
+    if(getQueryString('userType')) {
+      userType = getQueryString('userType');
+    }
+    if(userType != '1') {
+      $('.No').hide();
+    }
+    init();
+    //获取url参数
+    function getQueryString(name) {  
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+      var r = window.location.search.substr(1).match(reg);  
+      if (r != null) return decodeURI(r[2]);
+      return null;  
+    }
+    
+    document.getElementById("TabId").addEventListener(
+      "touchend",
+      function (even) {
+        let activeName = even.target.dataset.tabname;
+        let target = even.target;
+        target.parentNode.children;
+        Array.prototype.forEach.call(target.parentNode.children, function (item) {
+          if (target !== item) {
+            item.classList.remove("active");
+          }
+        });
+        if (target.nodeName.toUpperCase() === "LI") {
+          target.classList.add("active");
+        }
+        changeTabInfo(activeName);
+      },
+      false
+    );
+    document.getElementById("YesTabId").addEventListener(
+      "touchend",
+      function (even) {
+        let activeName = even.target.dataset.tabname;
+        let target = even.target;
+        target.parentNode.children;
+        Array.prototype.forEach.call(target.parentNode.children, function (
+          item
+        ) {
+          if (target !== item) {
+            item.classList.remove("active");
+          }
+        });
+        if (target.nodeName.toUpperCase() === "LI") {
+          target.classList.add("active");
+        }
+        // initTabInfo(activeName);
+        initTabInfo2(activeName);
+      },
+      false
+    );
+    // tab切换 统一
+    function initTabInfo2(activeName) {
+      //执行ajax
+      if (activeName) {
+        console.log(activeName)
+        if (activeName) {
+          // var fragment = document.createDocumentFragment(); //创建文档碎片
+          var ctx = document.getElementsByClassName("container")[0]
+          ctx.innerHTML = ''
+          var Arr = ''
+          initData("http://10.10.101.224:8099" + "/api/app/parentH5AppList", activeName, function (res) {
+            Arr = res
+            if (Arr) {
+              ctx.innerHTML = createOA(Arr);
+            }
+          });
+        }
+
+      }
+    };
+    // tab切换 统一
+    function initTabInfo(activeName) {
+      //执行ajax
+      if (activeName) {
+        console.log(activeName)
+        if (activeName) {
+          // var fragment = document.createDocumentFragment(); //创建文档碎片
+          var ctx = document.getElementsByClassName("container")[0]
+          ctx.innerHTML = ''
+          var Arr = ''
+          initData("http://10.10.101.224:8099" + "/api/app/teacherH5AppList", "", function (res) {
+            Arr = res
+            if (Arr) {
+              ctx.innerHTML = createOA(Arr);
+            }
+          });
+        }
+
+      }
+    };
+    // 非统一
+    function changeTabInfo(activeName) {
+      //执行ajax
+      //(1,"学校应用") (2,"市级应用") (3,"省级应用") (4,"国家级应用");
+      if (activeName) {
+        var ctx = document.getElementsByClassName("container")[1]
+        ctx.innerHTML = ''
+        var Arr = ''
+        initData("http://10.10.101.224:8099" + "/api/index/nonUniformAccountList", activeName, function (res) {
+          Arr = res
+          if (Arr) {
+            ctx.innerHTML = createOA(Arr);
+          } else {
+
+          }
+        });
+      }
+    }
+    function encode(str){
+      // 对字符串进行编码
+      var encode = encodeURI(str);
+      // 对编码的字符串转化base64
+      var base64 = btoa(encode);
+      return base64;
+    };
+     // base64转字符串
+    function decode(base64){
+      // 对base64转编码
+      var decode = atob(base64);
+      // 编码转字符串
+      var str = decodeURI(decode);
+      return str;
+    }
+
+    //初始化应用
+    function init() {
+      // 执行Ajax
+      if(userType == '1') {
+        $.ajax({
+          url: "http://10.10.101.224:8099" + "/api/app/teacherH5AppList",
+          type: "post",
+          dataType: 'json',
+          headers: {
+            Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+          },
+          data: {
+            userType: userType,
+            appType: '',
+          },
+          success: function (res) {
+            if(typeof(res) == 'string') {
+              res = JSON.parse(res)
+            }
+            if (res.code == 200) {
+              
+              var $YesTabId = $('#YesTabId')[0];
+              var frag = ''; //创建文档碎片
+              var Arr = res.data
+              Arr.forEach(function (item) { 
+                frag +=
+                `<li  data-TabName="${item.appType}">${item.tableName}</li>`
+              });
+              
+              $YesTabId.innerHTML = frag
+              $("ul#YesTabId li:first").addClass("active");
+              // createTable(res.data.tableName);
+              // tab渲染end
+              // container渲染
+              // var unifyCtx = document.getElementsByClassName("container")[0]
+              if(Arr == '') {
+                $('.Yes').hide()
+              }else{
+                $.ajax({
+                  url: "http://10.10.101.224:8099" + '/api/app/teacherH5AppList',
+                  type: "post",
+                  async: true,
+                  dataType: 'json',
+                  headers: {
+                    Accept: 'application/x-www-form-urlencoded; charset=utf-8'
+                  },
+                  data: {
+                    userType: userType,
+                    appType: Arr[0].appType,
+                  },
+                  success: function (res) {
+                    
+                    if(typeof(res) == 'string') {
+                      res = JSON.parse(res)
+                    }
+                    if (res.code == 403) {
+                      window.location.href = res.data;
+                      return ;
+                    }
+                    if (res.code == 200) {
+                      var unifyArr = res.data
+                      var unifyCtx = document.getElementsByClassName("container")[0]
+                      unifyCtx.innerHTML = ''
+                      var fragment = ""
+                      unifyArr.forEach(function (item) {
+                        //console.log('fragment',item);
+                        fragment +=
+                        `<div class="item"><a href="${item.url}" target="_blank">
+                          <div><img src="${item.logo}" alt=""/></div>
+                          <div>${item.name}</div>
+                        </a></div>`
+                      });
+                      unifyCtx.innerHTML = fragment
+                    } 
+                  }
+                });
+              }
+              
+              // container渲染end
+              
+            }else if (res.code == 403) {
+              console(res.data + encode(url))
+              window.location.href = res.data + encode(url);
+              return ;
+            }
+          }
+        });
+      }else if(userType == '2' || userType == '3'){
+        $.ajax({
+          url: "http://10.10.101.224:8099" + "/api/app/parentH5AppList",
+          type: "post",
+          dataType: 'json',
+          headers: {
+            Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+          },
+          data: {
+            userType: userType,
+            appType: '',
+          },
+          success: function (res) {
+            if(typeof(res) == 'string') {
+              res = JSON.parse(res)
+            }
+            if (res.code == 200) {
+              var $YesTabId = $('#YesTabId')[0];
+              var frag = ''; //创建文档碎片
+              var Arr2 = res.data
+              Arr2.forEach(function (item) { 
+                frag +=
+                `<li  data-TabName="${item.appType}">${item.tableName}</li>`
+              });
+              // console.log(frag)
+              $YesTabId.innerHTML = frag
+              $("ul#YesTabId li:first").addClass("active");
+              // var unifyCtx = document.getElementsByClassName("container")[0]
+              $.ajax({
+                url: "http://10.10.101.224:8099" + '/api/app/parentH5AppList',
+                type: "post",
+                async: true,
+                dataType: 'json',
+                headers: {
+                  Accept: 'application/x-www-form-urlencoded; charset=utf-8'
+                },
+                data: {
+                  userType: userType,
+                  appType: Arr2[0].appType,
+                },
+                success: function (res) {
+                  
+                  if(typeof(res) == 'string') {
+                    res = JSON.parse(res)
+                  }
+                  if (res.code == 403) {
+                    window.location.href = res.data;
+                    return ;
+                  }
+                  if (res.code == 200) {
+                    var unifyArr = res.data
+                    var unifyCtx = document.getElementsByClassName("container")[0]
+                    unifyCtx.innerHTML = ''
+                    var fragment = ""
+                    unifyArr.forEach(function (item) {
+                      //console.log('fragment',item);
+                      fragment +=
+                      `<div class="item"><a href="${item.url}" target="_blank">
+                        <div><img src="${item.logo}" alt=""/></div>
+                        <div>${item.name}</div>
+                      </a></div>`
+                    });
+                    unifyCtx.innerHTML = fragment
+                  } 
+                }
+              });
+              // unifyCtx.innerHTML = ''
+              // var fragment = ""
+              // unifyArr.forEach(function (item) {
+              //   //console.log('fragment',item);
+              //   fragment +=
+              //   `<div class="item"><a href="${item.url}" target="_blank">
+              //     <div><img src="${item.logo}" alt=""/></div>
+              //     <div>${item.name}</div>
+              //   </a></div>`
+              // });
+              // unifyCtx.innerHTML = fragment
+            }else if (res.code == 403) {
+              console(res.data + encode(url))
+              window.location.href = res.data + encode(url);
+              return ;
+            }
+          }
+        });
+        // console.log($('#YesTabId'))
+        // $('li')[0].setAttribute("class",'active')
+      }
+      
+      $.ajax({
+        url: "http://10.10.101.224:8099" + "/api/index/nonUniformAccountList",
+        type: "post",
+        dataType: 'json',
+        headers: {
+          Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        data: {
+          appType: 1,
+        },
+        success: function (res) {
+          if(typeof(res) == 'string') {
+            res = JSON.parse(res)
+          }
+          if (res.code == 200) {
+            var NoUnifyArr = res.data
+            // console.log('NoUnifyArr', res)
+            var NoUnifyCtx = document.getElementsByClassName("container")[1]
+            NoUnifyCtx.innerHTML = ''
+            var fragment1 = ""
+            NoUnifyArr.forEach(function (item) { 
+              fragment1 +=
+              `<div class="item"><a href="${item.url}" target="_blank">
+                <div><img src="${item.logo}" alt="" /></div>
+                <div>${item.name}</div>
+              </a></div>`
+            });
+            NoUnifyCtx.innerHTML = fragment1
+            
+          }else if (res.code == 403) {
+            window.location.href = res.data + encode(url);
+            return ;
+          }
+        }
+      });
+      
+    };
+    // function createTab(params) {
+    //   var fragment = ''; //创建文档碎片
+    //   var Arr = params
+    //   Arr.forEach(function (item) { 
+    //     fragment += `<li  data-TabName="${item.appType}">${item.tableName}</li>`
+    //   });
+    //   return fragment;
+    // }
+    function createOA(params) {
+      var fragment = ''; //创建文档碎片
+      var Arr = params
+      Arr.forEach(function (item) { 
+        fragment +=
+        `<div class="item"><a href="${item.url}" target="_blank">
+          <div><img src="${item.logo}" alt=""/></div>
+          <div>${item.name}</div>
+        </a></div>`
+      });
+      return fragment;
+    }
+
+    function handleCallback() {
+      if (res.code == 200) {
+        console.log(res);
+        res.data.forEach(function (item) {
+          console.log(item);
+        });
+
+      } else {
+
+      }
+    };
+    
+    function initData(type, params, callback) {
+      var obj = []
+      $.ajax({
+        url: type,
+        type: "post",
+        async: true,
+        dataType: 'json',
+        headers: {
+          Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        data: {
+          userType: userType,
+          appType: params,
+        },
+        success: function (res) {
+          if(typeof(res) == 'string') {
+            res = JSON.parse(res)
+          }
+          if (res.code == 403) {
+            // console.log('typeof',typeof(res))
+            window.location.href = res.data + encode(url);
+            return ;
+          }
+          if (res.code == 200) {
+            // console.log(res.data);
+            obj = res.data
+            callback(obj);
+          }
+        }
+      });
+    };
+  </script>
+</body>
+
+</html>

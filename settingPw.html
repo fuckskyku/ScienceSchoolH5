@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="./assets/css/public.min.css" />
+  <link rel="stylesheet" href="./assets/css/settingPw.min.css" />
+  <link rel="stylesheet" href="./util/layer_mobile/need/layer.css" />
+  <script src="./util/layer_mobile/layer.js"></script>
+  <title>设置密码</title>
+  <script src="./js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    var clientWidth = document.documentElement.clientWidth;
+    //   if (clientWidth < 768) {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      Math.floor(clientWidth / 7.5) + "px";
+    //   }
+  </script>
+</head>
+
+<body>
+  <section>
+    <form action="" id="form">
+      <div>
+        <label for="">帐号</label><input type="text" disabled placeholder="请输入帐号" id="account" name="account" />
+      </div>
+      <div>
+        <label for="">旧密码</label><input type="text" placeholder="请输入旧密码" name="oldPw" />
+      </div>
+      <div>
+        <label for="">新密码</label><input type="text" placeholder="请输入新密码" name="newPw" />
+      </div>
+      <div>
+        <label for="">确认新密码</label><input type="text" placeholder="请再次输入新密码" name="okPw" />
+      </div>
+    </form>
+    <div class="tip">
+      新密码最低八位数，由常见的数字、英文、！@#$%&*组成。不符合无法提交。
+    </div>
+    <div class="buttonGroup">
+      <button type="submit" id="submit">
+        保存
+      </button>
+    </div>
+  </section>
+  <div id="shade">
+    <div class="containter">
+      <div class="content">
+        <div class="header">
+          <img src="./static/H5/popUp/img_success.png" alt="" />
+        </div>
+        <div class="tip">
+          设置成功
+        </div>
+        <span>
+          新密码设置成功！请继续设置密保问题！
+        </span>
+        <div class="footer">
+          <button><a href="./src/settingSecret.html">继续设置</a></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var domain = window.location.host;
+    document.getElementById("shade").style.display = "none";
+    document.getElementById("account").value = getQueryString('userName');
+    //点击遮罩关闭
+    document.getElementById("shade").addEventListener("touchend", shadeClose, false);
+    function shadeClose() {
+      if (window.event.target.id == "shade") {
+        document.getElementById("shade").style.display = "none";
+      } else {}
+    }
+    //获取url参数
+    function getQueryString(name) {  
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+      var r = window.location.search.substr(1).match(reg);  
+      if (r != null) return decodeURI(r[2]);
+      return null;  
+    }
+    document.getElementById("submit").addEventListener(
+      "touchend",
+      function () {
+        let form = document.getElementById("form");
+        if (
+          form.oldPw.value &&
+          form.newPw.value &&
+          form.okPw.value
+        ) {
+          var reg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{8,}$/;
+          // form.newPw.value.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
+          if (!reg.test(form.newPw.value)) {
+            layer.open({
+              content: "最低八位数，由数字、字母、特殊符号组成",
+              skin: "msg",
+              time: 2 //2秒后自动关闭
+            });
+            return;
+          }
+          if (form.newPw.value != form.okPw.value) {
+            layer.open({
+              content: "两次输入的密码不一致，请重新输入",
+              skin: "msg",
+              time: 2 //2秒后自动关闭
+            });
+            return;
+          }
+          // 表单验证成功执行Ajax
+          $.ajax({
+            url: "http://10.10.101.224:8099" + '/api/user/modifyPass',
+            type: "post",
+            async: true,
+            dataType: 'json',
+            headers: {
+              Accept: 'application/x-www-form-urlencoded; charset=utf-8'
+            },
+            data: {
+              newPassword: form.newPw.value,
+              password: form.oldPw.value
+            },
+            success: function (res) {
+              //res = JSON.parse(res)
+              if (res.code == 403) {
+                window.location.href = res.data;
+                return ;
+              }
+              if (res.code == 200) {
+                document.getElementById("shade").style.display = "block";
+              }
+            }
+          });
+
+        } else {
+          //提示
+          layer.open({
+            content: "不能为空",
+            skin: "msg",
+            time: 2 //2.5秒后自动关闭
+          });
+          return;
+        }
+      },
+      false
+    );
+  </script>
+</body>
+
+</html>

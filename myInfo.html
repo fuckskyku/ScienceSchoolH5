@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="./assets/css/public.min.css" />
+  <link rel="stylesheet" href="./assets/css/myInfo.min.css" />
+  <title>账户中心</title>
+  <script src="./js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript">
+    var clientWidth = document.documentElement.clientWidth;
+    //   if (clientWidth < 768) {
+    document.getElementsByTagName("html")[0].style.fontSize =
+      Math.floor(clientWidth / 7.5) + "px";
+    //   }
+  </script>
+</head>
+
+<body>
+  <header>
+    <div><img src="./static/H5/account/img_picture.png" alt="" /></div>
+    <!-- <div> -->
+    <span class="user">你好，</span>
+    <!-- </div> -->
+  </header>
+  <section>
+    <div id="settingPw">
+      <i><img src="./static/H5/account/ic-passward.png" alt="" /></i>
+      <span>设置密码</span>
+      <i class="Shears"><img src="./static/H5/account/ic_arrow.png" alt="" /></i>
+    </div>
+    <div id="settingSecret">
+      <i><img src="./static/H5/account/ic-protect.png" alt="" /></i>
+      <span>设置密保</span>
+      <i class="Shears"><img src="./static/H5/account/ic_arrow.png" alt="" /></i>
+    </div>
+  </section>
+  <footer>
+    <button id="quit">退出登录</button>
+  </footer>
+
+  <div id="shade">
+    <div class="containter">
+      <div class="content">
+        <div class="header">
+          <img src="./static/H5/popUp/img_tips.png" alt="" />
+        </div>
+        <div class="tip">
+          系统提示
+        </div>
+        <span class="textTip">
+          检测到您的密码是管理员为您随机生成的，为了信息安全，请自行更改为自己便于记忆的密码，并设置密保问题，方便找回密码。
+        </span>
+        <div class="footer">
+          <button id="hrefLink">立即设置</button>
+        </div>
+        <div class="footerTwo">
+          <button class="ok">确定</button>
+          <button class="no">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let flag = true;
+    let userName = '';
+    var domain = window.location.host;
+    // 检验用户密码是否有修改
+    $.ajax({
+      url: "http://10.10.101.224:8099" + '/api/user/checkPassword',
+      type: "post",
+      async: true, 
+      dataType: 'json',
+      headers: { 
+        Accept: 'application/x-www-form-urlencoded; charset=utf-8'
+      }, 
+      data: {},
+      success: function (res) {
+        if(typeof(res) == 'string') {
+          res = JSON.parse(res)
+        }
+        if(res.code == 403){
+          window.location.href = res.data ;
+          return ;
+        }
+        if (res.code == 200) {
+          var obj = res.data
+          userName = obj.userName
+          $('.user').html(userName);
+          if(!obj.flag) {
+            console.log('检验用户密码是否有修改',res.data);
+            typeConversion(1);
+          }
+        }
+      }
+    });
+    
+
+    //退出
+    document.getElementById("quit").addEventListener("touchend", isQuit, false);
+
+    function isQuit(event) {
+      typeConversion(0);
+    }
+    document.getElementsByClassName("ok")[0].addEventListener("touchend", quit, false);
+    function quit(event) {
+      if(document.querySelector(".textTip").innerText == "确定要退出账号吗？") {
+      $.ajax({
+          url: "http://10.10.101.224:8099" + '/api/user/logout',
+          type: "get",
+          async: true,
+          headers: {
+            Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+            "X-Requested-With": 'XMLHttpRequest'
+          },
+          data: {},
+          success: function (res) {
+            if(typeof(res) == 'string') {
+              res = JSON.parse(res)
+            }
+            if(res.code == 403){
+              window.location.href = res.data ;
+              return ;
+            }
+            res = JSON.parse(res)
+            if (res.code == 200) {
+              document.getElementById("shade").style.display = "none";
+              window.location.reload() 
+            }
+          }
+        });
+      }
+    };
+    //点击遮罩关闭
+    document
+      .getElementById("shade")
+      .addEventListener("touchend", shadeClose, false);
+
+    function shadeClose() {
+      if (window.event.target.id == "shade") {
+        document.getElementById("shade").style.display = "none";
+      } else {}
+    }
+
+    //点击取消关闭
+    document.querySelector(".no").addEventListener("touchend", Close, false);
+
+    function Close() {
+      document.getElementById("shade").style.display = "none";
+    }
+
+    //点击立即设置跳转
+    document
+      .getElementById("hrefLink")
+      .addEventListener("touchend", hrefLink, false);
+
+    function hrefLink(event) {
+      if (flag) {
+        window.location.href = "./settingPw.html?userName=" + userName;
+      } else {
+        window.location.href = "./settingSecret.html?userName=" + userName;
+      }
+
+      //阻止事件冒泡
+      window.event ?
+        (window.event.cancelBubble = true) :
+        event.stopPropagation();
+    }
+
+    //控制弹出层的变换
+    function typeConversion(type) {
+      document.getElementById("shade").style.display = "block";
+      if (type === 0) {
+        document.querySelector(".textTip").innerText = "确定要退出账号吗？";
+        document.querySelector(".footer").style.display = "none";
+        document.querySelector(".footerTwo").style.display = "flex";
+        
+      } else if (type === 1) {
+        // document.getElementById("shade").style.display = "block";
+      } else if (type === 2) {
+        document.querySelector(".textTip").innerText =
+          "检测到您的密保问题尚未设置，请设置。找回密码时需使用密保答案。";
+
+        // document.getElementById("shade").style.display = "block";
+      }
+    }
+
+    document.getElementById("settingPw").addEventListener(
+      "touchend",
+      function () {
+        window.location.href = "./settingPw.html?userName=" + userName;
+      },
+      false
+    );
+    document.getElementById("settingSecret").addEventListener(
+      "touchend",
+      function () {
+        window.location.href = "./settingSecret.html?userName=" + userName;
+      },
+      false
+    );
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+section {
+  height: 100%;
+  background: #f2f2f2;
+
+  .Yes,
+  .No {
+    background: white;
+    padding: 0.4rem 0.3rem;
+
+    &:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .head {
+      font-weight: bold;
+      font-size: 0.34rem;
+
+      div:nth-child(1) {
+        padding-left: 0.2rem;
+        position: relative;
+        float: left;
+        line-height: 0.6rem;
+
+        &:after {
+          position: absolute;
+          content: "";
+          background: #036da1;
+          width: 0.06rem;
+          height: 0.4rem;
+          top: 50%;
+          border-radius: 10px;
+          left: 0;
+          margin-top: -0.2rem;
+        }
+      }
+
+      img {
+        width: 0.6rem;
+        height: 0.6rem;
+        float: right;
+      }
+
+      &:after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+    }
+
+    .container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+
+      // justify-content: space-between;
+      .item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        // justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-flex: 1.71rem;
+        -ms-flex: 1.71rem 0 1;
+        flex: 1.71rem 0 1;
+
+        a {
+          color: initial;
+        }
+
+        img {
+          margin-top: 0.4rem;
+          width: 0.8rem;
+          height: 0.8rem;
+        }
+
+        div {
+          text-align: center;
+          font-size: 0.26rem;
+        }
+      }
+    }
+  }
+  .Yes,
+  .No {
+    margin-top: 0.2rem;
+   
+    .nav {
+      font-size: 0.3rem;
+      color: #999999;
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+        justify-content: space-evenly;
+        border-bottom: 1px solid #dedede;
+
+        li {
+          font-weight: 500;
+          position: relative;
+          padding: 0.2rem 0;
+
+          &.active {
+            color: #036da1;
+            font-weight: bold;
+
+            &:after {
+              content: "";
+              width: 100%;
+              border-radius: 5px;
+              height: 0.05rem;
+              position: absolute;
+              background: #036da1;
+              bottom: 0;
+              left: 0;
+            }
+
+          }
+        }
+      }
+    }
+
+    // .img {
+    //   width: 0.6rem;
+    // }
+  }
+}
