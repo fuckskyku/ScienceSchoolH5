@@ -26,11 +26,11 @@
       </header>
       <section>
         <form action="" id="form">
-          <div>
+          <div class="fixed">
             <label class="label" for="account">绑定账号</label>
             <input type="text" placeholder="请输入学籍号" id="account" name="account" />
           </div>
-          <div>
+          <div class="fixed">
             <label class="label" for="pw">账号密码</label>
             <input type="text" placeholder="请输入密码" name="pw" />
           </div>
@@ -62,7 +62,7 @@
         ) {
           // 表单验证成功执行Ajax
           $.ajax({
-            url: "http://10.10.101.224:8099" + '/api/weiXin/bdStudent',
+            url: domain + '/api/weiXin/bdStudent',
             type: "post",
             async: true,
             dataType: 'json',
@@ -89,7 +89,9 @@
                   skin: "msg",
                   time: 2 //2.5秒后自动关闭
                 });
-                window.location.href = './binding.html'
+                setTimeout(()=>{
+                  window.location.href = './binding.html'
+                },2000)
               }else{
                 layer.open({
                   content: "绑定失败",

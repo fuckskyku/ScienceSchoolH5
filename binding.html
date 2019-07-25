@@ -50,9 +50,11 @@
     </div>
   </div>
  <script>
+   let activeName = '';
     var url = window.location.href;
     var unBindId = '';
     //点击遮罩关闭
+    $("#shade").hide();
     function shadeClose() {
       $("#shade").toggle();
       unBindId = ''
@@ -61,8 +63,28 @@
     function nextUnBind() {
       window.location.href = './selectBindType.html'
     };
-    function unBind(params) {
-      console.log(params)
+    
+    
+
+    function getUserInfo(params) {
+      var $content = document.getElementsByClassName("btn")
+      for(var i = 0;i < $content.length; i++) {
+        $content[i].addEventListener(
+          "touchend",
+          function (even) {
+            console.log(even)
+            activeName = even.target.dataset.tabname;
+            unBind(params)
+            // changeTabInfo(activeName);
+          },
+          false
+        );
+      }
+    };
+
+    function unBind(params,type) {
+      // getUserInfo();
+      console.log('params',params,'type',type)
       unBindId = params
       $("#shade").toggle();
     };
@@ -70,14 +92,14 @@
       var fragment = document.createDocumentFragment(); //创建文档碎片
       var ctx = document.getElementsByTagName('section')[0]; 
       ctx.innerHTML = ''
-      var accountList = [{identity:'老师',account: '1533'},{identity:'家长',account: '1521'},{identity:'学生',account: '1122'}]
+      var accountList = [{identity:'老师',account: '1533',userType: '1'},{identity:'家长',account: '1521',userType: '2'},{identity:'学生',account: '1122',userType: '3'}]
       for(var i = 0;i < accountList.length;i++){
         var div = document.createElement('div')
         div.setAttribute("class","content")
         div.innerHTML = 
         `
           <div><label>身份</label>${accountList[i].identity}</div>
-          <div><label>绑定账号</label>${accountList[i].account}<div class="btn" onclick="unBind(${accountList[i].account})">解除绑定</div></div>
+          <div><label>绑定账号</label>${accountList[i].account}<div data-TabName="${accountList[i].userType}" class="btn" onclick="unBind(${accountList[i].account},${accountList[i].userType})">解除绑定</div></div>
         `
         fragment.append(div)
       }

@@ -28,11 +28,11 @@
       </header>
       <section>
         <form action="" id="form">
-          <div>
+          <div class="fixed">
             <label class="label" for="account">绑定账号</label>
             <input type="text" placeholder="请输入账号" id="account" name="account" />
           </div>
-          <div>
+          <div class="fixed">
             <label class="label" for="pw">账号密码</label>
             <input type="text" placeholder="请输入密码" name="pw" />
           </div>
@@ -65,7 +65,7 @@
         ) {
           // 表单验证成功执行Ajax
           $.ajax({
-            url: "http://10.10.101.224:8099" + '/api/weiXin/bdTeacher',
+            url: domain + '/api/weiXin/bdTeacher',
             type: "post",
             async: true,
             dataType: 'json',

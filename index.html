@@ -23,7 +23,7 @@
   <section>
     <article class="Yes">
       <div class="head">
-        <div>统一账号的应用</div>
+        <div>数字化校园管理平台</div>
         <a href="./myInfo.html">
           <img src="./static/H5/index/ic_man.png" alt="" />
         </a>
@@ -48,7 +48,7 @@
     </article>
     <article class="No">
       <div class="head">
-        <div>非统一账号的应用</div>
+        <!-- <div>非统一账号的应用</div> -->
         <!-- <img src="./static/H5/index/ic_man.png" alt="" /> -->
       </div>
       <div class="nav">
@@ -69,13 +69,14 @@
     </article>
   </section>
   <script>
-    
-    var userType = '2';
+    var userType = '1';
     var url = window.location.href;
-    var domain = window.location.host;
+    // var domain = window.location.host;
+    var domain = "http://10.10.101.224:8099";
     if(getQueryString('userType')) {
       userType = getQueryString('userType');
     }
+    // 控制底部显示隐藏
     if(userType != '1') {
       $('.No').hide();
     }
@@ -137,7 +138,7 @@
           var ctx = document.getElementsByClassName("container")[0]
           ctx.innerHTML = ''
           var Arr = ''
-          initData("http://10.10.101.224:8099" + "/api/app/parentH5AppList", activeName, function (res) {
+          initData(domain + "/api/app/parentH5AppList", activeName, function (res) {
             Arr = res
             if (Arr) {
               ctx.innerHTML = createOA(Arr);
@@ -157,7 +158,7 @@
           var ctx = document.getElementsByClassName("container")[0]
           ctx.innerHTML = ''
           var Arr = ''
-          initData("http://10.10.101.224:8099" + "/api/app/teacherH5AppList", "", function (res) {
+          initData(domain + "/api/app/teacherH5AppList", "", function (res) {
             Arr = res
             if (Arr) {
               ctx.innerHTML = createOA(Arr);
@@ -175,7 +176,7 @@
         var ctx = document.getElementsByClassName("container")[1]
         ctx.innerHTML = ''
         var Arr = ''
-        initData("http://10.10.101.224:8099" + "/api/index/nonUniformAccountList", activeName, function (res) {
+        initData(domain + "/api/index/nonUniformAccountList", activeName, function (res) {
           Arr = res
           if (Arr) {
             ctx.innerHTML = createOA(Arr);
@@ -205,42 +206,42 @@
     function init() {
       // 执行Ajax
       if(userType == '1') {
-        $.ajax({
-          url: "http://10.10.101.224:8099" + "/api/app/teacherH5AppList",
-          type: "post",
-          dataType: 'json',
-          headers: {
-            Accept: 'application/x-www-form-urlencoded; charset=utf-8',
-          },
-          data: {
-            userType: userType,
-            appType: '',
-          },
-          success: function (res) {
-            if(typeof(res) == 'string') {
-              res = JSON.parse(res)
-            }
-            if (res.code == 200) {
+        // $.ajax({
+        //   url: domain + "/api/app/teacherH5AppList",
+        //   type: "post",
+        //   dataType: 'json',
+        //   headers: {
+        //     Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+        //   },
+        //   data: {
+        //     userType: userType,
+        //     appType: '5',
+        //   },
+        //   success: function (res) {
+        //     if(typeof(res) == 'string') {
+        //       res = JSON.parse(res)
+        //     }
+        //     if (res.code == 200) {
               
-              var $YesTabId = $('#YesTabId')[0];
-              var frag = ''; //创建文档碎片
-              var Arr = res.data
-              Arr.forEach(function (item) { 
-                frag +=
-                `<li  data-TabName="${item.appType}">${item.tableName}</li>`
-              });
+        //       var $YesTabId = $('#YesTabId')[0];
+        //       var frag = ''; //创建文档碎片
+        //       var Arr = res.data
+              // Arr.forEach(function (item) { 
+              //   frag +=
+              //   `<li  data-TabName="${item.appType}">${item.tableName}</li>`
+              // });
               
-              $YesTabId.innerHTML = frag
-              $("ul#YesTabId li:first").addClass("active");
+              // $YesTabId.innerHTML = frag
+              // $("ul#YesTabId li:first").addClass("active");
               // createTable(res.data.tableName);
               // tab渲染end
               // container渲染
               // var unifyCtx = document.getElementsByClassName("container")[0]
-              if(Arr == '') {
-                $('.Yes').hide()
-              }else{
+              // if(Arr == '') {
+              //   $('.Yes').hide()
+              // }else{
                 $.ajax({
-                  url: "http://10.10.101.224:8099" + '/api/app/teacherH5AppList',
+                  url: domain + '/api/app/teacherH5AppList',
                   type: "post",
                   async: true,
                   dataType: 'json',
@@ -249,7 +250,8 @@
                   },
                   data: {
                     userType: userType,
-                    appType: Arr[0].appType,
+                    appType: 5,
+                    // appType: Arr[0].appType,
                   },
                   success: function (res) {
                     
@@ -257,7 +259,7 @@
                       res = JSON.parse(res)
                     }
                     if (res.code == 403) {
-                      window.location.href = res.data;
+                      window.location.href = res.data + encode(url);
                       return ;
                     }
                     if (res.code == 200) {
@@ -277,47 +279,47 @@
                     } 
                   }
                 });
-              }
+              // }
               
               // container渲染end
               
-            }else if (res.code == 403) {
-              console(res.data + encode(url))
-              window.location.href = res.data + encode(url);
-              return ;
-            }
-          }
-        });
+            // }else if (res.code == 403) {
+            //   console(res.data + encode(url))
+            //   window.location.href = res.data + encode(url);
+            //   return ;
+            // }
+        //   }
+        // });
       }else if(userType == '2' || userType == '3'){
-        $.ajax({
-          url: "http://10.10.101.224:8099" + "/api/app/parentH5AppList",
-          type: "post",
-          dataType: 'json',
-          headers: {
-            Accept: 'application/x-www-form-urlencoded; charset=utf-8',
-          },
-          data: {
-            userType: userType,
-            appType: '',
-          },
-          success: function (res) {
-            if(typeof(res) == 'string') {
-              res = JSON.parse(res)
-            }
-            if (res.code == 200) {
-              var $YesTabId = $('#YesTabId')[0];
-              var frag = ''; //创建文档碎片
-              var Arr2 = res.data
-              Arr2.forEach(function (item) { 
-                frag +=
-                `<li  data-TabName="${item.appType}">${item.tableName}</li>`
-              });
-              // console.log(frag)
-              $YesTabId.innerHTML = frag
-              $("ul#YesTabId li:first").addClass("active");
+        // $.ajax({
+        //   url: domain + "/api/app/parentH5AppList",
+        //   type: "post",
+        //   dataType: 'json',
+        //   headers: {
+        //     Accept: 'application/x-www-form-urlencoded; charset=utf-8',
+        //   },
+        //   data: {
+        //     userType: userType,
+        //     appType: '5',
+        //   },
+        //   success: function (res) {
+        //     if(typeof(res) == 'string') {
+        //       res = JSON.parse(res)
+        //     }
+        //     if (res.code == 200) {
+        //       var $YesTabId = $('#YesTabId')[0];
+        //       var frag = ''; //创建文档碎片
+        //       var Arr2 = res.data
+              // Arr2.forEach(function (item) { 
+              //   frag +=
+              //   `<li  data-TabName="${item.appType}">${item.tableName}</li>`
+              // });
+              // // console.log(frag)
+              // $YesTabId.innerHTML = frag
+              // $("ul#YesTabId li:first").addClass("active");
               // var unifyCtx = document.getElementsByClassName("container")[0]
               $.ajax({
-                url: "http://10.10.101.224:8099" + '/api/app/parentH5AppList',
+                url: domain + '/api/app/parentH5AppList',
                 type: "post",
                 async: true,
                 dataType: 'json',
@@ -326,7 +328,8 @@
                 },
                 data: {
                   userType: userType,
-                  appType: Arr2[0].appType,
+                  appType: 5,
+                  // appType: Arr2[0].appType,
                 },
                 success: function (res) {
                   
@@ -334,7 +337,7 @@
                     res = JSON.parse(res)
                   }
                   if (res.code == 403) {
-                    window.location.href = res.data;
+                    window.location.href = res.data + encode(url);
                     return ;
                   }
                   if (res.code == 200) {
@@ -365,19 +368,19 @@
               //   </a></div>`
               // });
               // unifyCtx.innerHTML = fragment
-            }else if (res.code == 403) {
-              console(res.data + encode(url))
-              window.location.href = res.data + encode(url);
-              return ;
-            }
-          }
-        });
+        //     }else if (res.code == 403) {
+        //       console(res.data + encode(url))
+        //       window.location.href = res.data + encode(url);
+        //       return ;
+        //     }
+        //   }
+        // });
         // console.log($('#YesTabId'))
         // $('li')[0].setAttribute("class",'active')
       }
       
       $.ajax({
-        url: "http://10.10.101.224:8099" + "/api/index/nonUniformAccountList",
+        url: domain + "/api/index/nonUniformAccountList",
         type: "post",
         dataType: 'json',
         headers: {

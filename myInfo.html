@@ -70,7 +70,7 @@
     var domain = window.location.host;
     // 检验用户密码是否有修改
     $.ajax({
-      url: "http://10.10.101.224:8099" + '/api/user/checkPassword',
+      url: domain + '/api/user/checkPassword',
       type: "post",
       async: true, 
       dataType: 'json',
@@ -109,7 +109,7 @@
     function quit(event) {
       if(document.querySelector(".textTip").innerText == "确定要退出账号吗？") {
       $.ajax({
-          url: "http://10.10.101.224:8099" + '/api/user/logout',
+          url: domain + '/api/user/logout',
           type: "get",
           async: true,
           headers: {
